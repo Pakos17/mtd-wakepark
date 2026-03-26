@@ -1127,10 +1127,43 @@ body.menu-open .hamburger span:nth-child(3) {
   line-height: 1;
 }
 
+.testimonial-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
 .testimonial-stars {
   display: flex;
   gap: 4px;
-  margin-bottom: 1rem;
+}
+
+.google-badge {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #5f6368;
+  background: #f8f9fa;
+  border: 1px solid #e8eaed;
+  border-radius: var(--radius-full);
+  padding: 3px 10px;
+}
+
+.author-avatar--initial {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: white;
+  flex-shrink: 0;
 }
 
 .testimonial-stars svg {
