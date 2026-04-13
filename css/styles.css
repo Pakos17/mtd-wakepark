@@ -1057,6 +1057,29 @@ body.menu-open .hamburger span:nth-child(3) {
   pointer-events: none;
 }
 
+.events-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  padding: 3rem;
+  color: rgba(255,255,255,0.7);
+  width: 100%;
+}
+
+.events-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255,255,255,0.2);
+  border-top-color: var(--color-coral);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
 .events-empty {
   text-align: center;
   padding: 3rem;

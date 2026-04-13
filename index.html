@@ -399,48 +399,17 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
       </button>
 
-      <div class="events-carousel">
-        <div class="event-card">
-          <div class="event-card-top">
-            <img src="https://placehold.co/400x200/2D4A3E/F5E6D0?text=Sunset+Session" alt="Sunset Session #3" loading="lazy" width="400" height="200">
-            <div class="event-date">
-              <span class="event-day">15</span>
-              <span class="event-month">JUIL</span>
-            </div>
-          </div>
-          <div class="event-content">
-            <h3>Sunset Session #3</h3>
-            <p>Session ride nocturne + DJ Set au coucher du soleil</p>
-          </div>
+      <div class="events-carousel" id="events-carousel">
+        <!-- Événements chargés dynamiquement depuis Google Calendar -->
+        <div class="events-loading">
+          <div class="events-spinner"></div>
+          <p>Chargement des événements...</p>
         </div>
+      </div>
 
-        <div class="event-card">
-          <div class="event-card-top">
-            <img src="https://placehold.co/400x200/E8734A/F5E6D0?text=Tournoi+Wake" alt="Tournoi Wake MTD" loading="lazy" width="400" height="200">
-            <div class="event-date">
-              <span class="event-day">02</span>
-              <span class="event-month">AOÛT</span>
-            </div>
-          </div>
-          <div class="event-content">
-            <h3>Tournoi Wake MTD</h3>
-            <p>Compétition amicale ouverte à tous les niveaux</p>
-          </div>
-        </div>
-
-        <div class="event-card">
-          <div class="event-card-top">
-            <img src="https://placehold.co/400x200/E8B44A/1A1A1A?text=Full+Moon+Paddle" alt="Full Moon Paddle" loading="lazy" width="400" height="200">
-            <div class="event-date">
-              <span class="event-day">19</span>
-              <span class="event-month">AOÛT</span>
-            </div>
-          </div>
-          <div class="event-content">
-            <h3>Full Moon Paddle</h3>
-            <p>Balade paddle sous la pleine lune, ambiance magique</p>
-          </div>
-        </div>
+      <div class="events-empty hidden" id="events-empty">
+        <p>Aucun événement à venir pour le moment.<br>Suivez-nous sur Instagram pour ne rien manquer !</p>
+        <a href="https://www.instagram.com/mtdwakepark/" target="_blank" rel="noopener" class="btn-outline-white">@mtdwakepark</a>
       </div>
 
       <button class="carousel-btn carousel-btn-next" aria-label="Suivant">

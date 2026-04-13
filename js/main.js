@@ -134,17 +134,83 @@ document.addEventListener('DOMContentLoaded', () => {
   animatedElements.forEach(el => animateObserver.observe(el));
 
   // ============================================
-  // 7. CARROUSEL ÉVÉNEMENTS
+  // 7. CARROUSEL ÉVÉNEMENTS — Google Calendar
   // ============================================
-  const carousel = document.querySelector('.events-carousel');
-  const prevBtn = document.querySelector('.carousel-btn-prev');
-  const nextBtn = document.querySelector('.carousel-btn-next');
+  const GCAL_API_KEY   = 'AIzaSyCrzvWCD8A2Wx1tDG70oqHvsBoSCGsD_wg';
+  const GCAL_ID        = '9fab0c2b555644fa8900cccfb9725c8c72c2b3b6374fb973c303cd2af5e14130@group.calendar.google.com';
+  const MONTHS_FR      = ['JAN','FÉV','MAR','AVR','MAI','JUN','JUL','AOÛT','SEP','OCT','NOV','DÉC'];
+  const CARD_COLORS    = ['#2D4A3E','#E8734A','#E8B44A','#C45C3C','#5B8A6E'];
+
+  const carousel    = document.getElementById('events-carousel');
+  const emptyState  = document.getElementById('events-empty');
+  const prevBtn     = document.querySelector('.carousel-btn-prev');
+  const nextBtn     = document.querySelector('.carousel-btn-next');
 
   function updateCarouselButtons() {
     if (!carousel) return;
     const { scrollLeft, scrollWidth, clientWidth } = carousel;
     prevBtn?.classList.toggle('hidden', scrollLeft <= 10);
     nextBtn?.classList.toggle('hidden', scrollLeft >= scrollWidth - clientWidth - 10);
+  }
+
+  function buildEventCard(event, index) {
+    const start   = event.start?.dateTime || event.start?.date || '';
+    const date    = start ? new Date(start) : null;
+    const day     = date ? String(date.getDate()).padStart(2, '0') : '--';
+    const month   = date ? MONTHS_FR[date.getMonth()] : '---';
+    const color   = CARD_COLORS[index % CARD_COLORS.length];
+    const title   = event.summary || 'Événement';
+    const desc    = event.description
+      ? event.description.replace(/<[^>]*>/g, '').slice(0, 100) + (event.description.length > 100 ? '…' : '')
+      : '';
+    const imgUrl  = `https://placehold.co/400x200/${color.replace('#','')}/F5E6D0?text=${encodeURIComponent(title.slice(0,20))}`;
+
+    return `
+      <div class="event-card">
+        <div class="event-card-top">
+          <img src="${imgUrl}" alt="${title}" loading="lazy" width="400" height="200">
+          <div class="event-date">
+            <span class="event-day">${day}</span>
+            <span class="event-month">${month}</span>
+          </div>
+        </div>
+        <div class="event-content">
+          <h3>${title}</h3>
+          ${desc ? `<p>${desc}</p>` : ''}
+        </div>
+      </div>`;
+  }
+
+  async function loadGoogleCalendarEvents() {
+    if (!carousel) return;
+    try {
+      const now      = new Date().toISOString();
+      const calId    = encodeURIComponent(GCAL_ID);
+      const url      = `https://www.googleapis.com/calendar/v3/calendars/${calId}/events`
+                     + `?key=${GCAL_API_KEY}&timeMin=${now}&orderBy=startTime`
+                     + `&singleEvents=true&maxResults=10`;
+
+      const res      = await fetch(url);
+      if (!res.ok) throw new Error(`API error ${res.status}`);
+      const data     = await res.json();
+      const events   = data.items || [];
+
+      if (events.length === 0) {
+        carousel.classList.add('hidden');
+        prevBtn?.classList.add('hidden');
+        nextBtn?.classList.add('hidden');
+        emptyState?.classList.remove('hidden');
+      } else {
+        carousel.innerHTML = events.map((ev, i) => buildEventCard(ev, i)).join('');
+        emptyState?.classList.add('hidden');
+        carousel.classList.remove('hidden');
+        updateCarouselButtons();
+      }
+    } catch (err) {
+      console.error('Google Calendar:', err);
+      carousel.innerHTML = '';
+      emptyState?.classList.remove('hidden');
+    }
   }
 
   prevBtn?.addEventListener('click', () => {
@@ -156,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   carousel?.addEventListener('scroll', updateCarouselButtons, { passive: true });
-  updateCarouselButtons();
+  loadGoogleCalendarEvents();
 
   // ============================================
   // 8. LIGHTBOX GALERIE
