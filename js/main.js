@@ -193,6 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const res      = await fetch(url);
       if (!res.ok) throw new Error(`API error ${res.status}`);
       const data     = await res.json();
+      console.log('Google Calendar API response:', JSON.stringify(data.items, null, 2));
       const events   = data.items || [];
 
       if (events.length === 0) {
